@@ -154,14 +154,9 @@ O Git reconhecerá os arquivos movidos quando possível. O `.gitignore` impede q
 2. **Fader, P. S.; Hardie, B. G. S.; Lee, K. L. (2005).** *“Counting Your Customers” the Easy Way: An Alternative to the Pareto/NBD Model*. **Marketing Science**, 24(2), 275–284. [DOI](https://doi.org/10.1287/mksc.1040.0098). Contribuição: análise do comportamento de recompra a partir do histórico de transações; o modelo probabilístico do artigo não foi implementado neste trabalho.
 3. **UCI Machine Learning Repository.** [Online Retail](https://archive.ics.uci.edu/dataset/352/online+retail) (licença CC BY 4.0).
 
-## 👨‍💻 Autor
+## 👨‍💻 Autores
 
-**Brendon Córdova Silveira** · Engenharia da Computação · Projeto Final de Machine Learning
-**Ígor Da Silva Antunes** · Engenharia da Computação · Projeto Final de Machine Learning
+**Brendon Córdova Silveira** · Engenharia da Computação · Projeto Final de Machine Learning  
+**Ígor da Silva Antunes** · Engenharia da Computação · Projeto Final de Machine Learning  
 **Davi Chechetto Westphal** · Engenharia da Computação · Projeto Final de Machine Learning
 
-<div align="center">
-
-⭐ Se o projeto foi útil, explore os notebooks e os gráficos para acompanhar cada etapa da análise.
-
-</div>
