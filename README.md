@@ -1,48 +1,165 @@
-# Projeto Final — K-means para janelas prováveis de recompra
+<div align="center">
 
-## Entrega reproduzida com a base integral
+# 🛍️ Quando comprar novamente?
 
-A entrada **online+retail.zip**, fornecida pelo usuário, contém **Online Retail.xlsx** com **541.909 linhas e 8 colunas**. O notebook importa todas elas (sem amostragem) e documenta a exclusão de operações inválidas/anônimas. O modelo K-means final é ajustado com **todas as 6.535 fotografias temporais de treino**; a amostra de até 2.500 fotografias é utilizada **apenas para estimar silhueta** durante a seleção de K.
+### Segmentação de clientes e identificação de janelas de recompra com K-means
 
-Resultado após a limpeza: **392.692 linhas**, **4.338 clientes**, **18.532 faturas válidas**. Houve 12.926 fotografias cliente-data, divididas cronologicamente em 6.535 de treino, 1.890 de validação e 4.501 de teste.
+<img src="assets/animacoes/kmeans_em_movimento.gif" alt="Animação conceitual mostrando pontos sendo agrupados em três clusters pelo K-means" width="760" />
 
-## Arquivos
+<p>
+  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/ML-K--means-00A896?style=for-the-badge" alt="K-means" />
+  <img src="https://img.shields.io/badge/Dados-UCI%20Online%20Retail-EEB868?style=for-the-badge" alt="Dataset UCI" />
+  <img src="https://img.shields.io/badge/Jupyter-Notebook-F37626?style=for-the-badge&logo=jupyter&logoColor=white" alt="Jupyter Notebook" />
+</p>
 
-- `online+retail.zip`: dados públicos originais da UCI, ZIP preservado.
-- `Projeto_Final_Kmeans_Recompra.ipynb`: código-fonte para executar a partir do início.
-- `Projeto_Final_Kmeans_Recompra_EXECUTADO.ipynb`: mesmo notebook **executado**, com saídas e gráficos incorporados.
-- `Relatorio_Final_Kmeans_Base_Completa.docx` e `.pdf`: relatório com resultados reais e referências.
-- `Apresentacao_Final_Kmeans_Base_Completa.pptx`: defesa com 14 slides e resultados reais.
-- `resultados_projeto/`: 10 gráficos PNG e CSVs de auditoria, fotografias, métricas, previsão para cada observação de teste, taxas por mês e recomendações retrospectivas.
-- `requirements.txt`: dependências de Python.
+**[📓 Notebook](notebooks/Projeto_Final.ipynb) · [📈 Resultados](resultados/graficos/) · [📄 Relatório](relatorio/Relatorio_Final.pdf) · [🎤 Apresentação](apresentacao/Apresentacao_Final.pptx)**
 
-## Como reproduzir
+</div>
 
-1. Extraia **todo** o pacote ZIP em uma pasta, mantendo `online+retail.zip` ao lado dos `.ipynb`. Não é necessário descompactar o dataset.
-2. Abra um terminal nessa pasta. Instale Python 3.10 ou superior e as dependências: `python -m pip install -r requirements.txt`.
-3. Execute `jupyter notebook` e abra `Projeto_Final_Kmeans_Recompra.ipynb`.
-4. Clique em **Run All / Executar tudo**, de cima para baixo. O notebook lê preferencialmente o ZIP local original. Uma nova pasta `resultados_projeto/` será preenchida.
-5. Para consultar os valores sem reexecutar o estudo, abra `Projeto_Final_Kmeans_Recompra_EXECUTADO.ipynb` e o relatório completo.
+---
 
-A execução validada ocorreu em Python 3.13.5 / pandas 2.2.3 / scikit-learn 1.8.0 com semente 42. A reprodução pode ter pequenas diferenças entre versões de bibliotecas. Computador com pelo menos 4 GB de RAM recomendado para a leitura do arquivo XLSX. A primeira instalação de dependências exige acesso ao repositório de pacotes; **a base de dados já está incluída**.
+## 💡 O problema
 
-## Métricas verificadas no teste (outubro–novembro/2011)
+É possível identificar **quando um cliente tem maior propensão a comprar novamente** usando seu histórico de compras? O projeto agrupa comportamentos semelhantes pelo **K-means**, calcula a taxa histórica de recompra dos grupos e avalia a indicação de uma **janela de 30 dias**.
 
-| Modelo | Precisão | Recall | F1 | Acurácia |
+> **Escopo:** a previsão diz respeito à **probabilidade de uma nova compra**, e **não** ao menor preço de um produto, à previsão de um SKU específico ou a uma compra garantida.
+
+<div align="center">
+  <img src="assets/animacoes/icone_clusters.gif" alt="Ícone animado de agrupamento" width="100" />
+  <img src="assets/animacoes/icone_carrinho.gif" alt="Ícone animado de carrinho de compras" width="100" />
+  <img src="assets/animacoes/icone_graficos.gif" alt="Ícone animado de análise de dados" width="100" />
+</div>
+
+*Os GIFs acima são **ilustrações conceituais originais**; os gráficos e métricas abaixo são calculados a partir da base real.*
+
+## 🔍 O que foi desenvolvido
+
+| Etapa | Abordagem |
+|---|---|
+| Dados | Leitura **integral** da base Online Retail da UCI, com auditoria dos registros |
+| Preparação | Tratamento de cancelamentos, identificadores ausentes e operações inválidas |
+| Engenharia de atributos | Recência, frequência, valor de compras, intervalos, comportamento recente |
+| **Modelo principal** | **K-means**, com seleção de K por critérios de agrupamento |
+| Comparação | **Árvore de Decisão** supervisionada para recompra nos próximos 30 dias |
+| Validação | Separação cronológica, métricas classificatórias, matrizes de confusão e curvas ROC |
+
+## 📦 Dados e resultados reais
+
+Os dados vêm do **[UCI Machine Learning Repository — Online Retail](https://archive.ics.uci.edu/dataset/352/online+retail)**, que descreve compras de uma varejista britânica entre dezembro de 2010 e dezembro de 2011. A planilha original está incluída em [`dados/Online Retail.xlsx`](dados/Online%20Retail.xlsx).
+
+| Indicador | Valor |
+|---|---:|
+| Linhas originais | **541.909** |
+| Linhas válidas após os filtros | **392.692** |
+| Clientes identificados após limpeza | **4.338** |
+| Fotografias cliente-data | **12.926** |
+| Treino / validação / teste | **6.535 / 1.890 / 4.501** |
+| Clusters selecionados | **3** |
+
+Os números acima foram obtidos da execução fornecida no projeto. Não foram geradas transações artificiais. A seleção de K empregou amostragem apenas para a estimativa de silhueta; o ajuste final do K-means utilizou todas as observações de treinamento.
+
+### 📊 Comparação em teste cronológico
+
+| Modelo | Precisão | Recall | F1-score | Acurácia |
 |---|---:|---:|---:|---:|
-| K-means + taxa histórica por grupo | 0,4561 | 0,8638 | **0,5970** | 0,5281 |
-| Árvore de decisão | 0,5631 | 0,6129 | 0,5869 | **0,6510** |
-| Sempre recomendar recompra | 0,4046 | 1,0000 | 0,5761 | 0,4046 |
-| Classe majoritária | 0,0000 | 0,0000 | 0,0000 | 0,5954 |
+| **K-means + taxa histórica por grupo** | 45,61% | **86,38%** | **59,70%** | 52,81% |
+| Árvore de Decisão | **56,31%** | 61,29% | 58,69% | **65,10%** |
+| Regra: sempre recomendar recompra | 40,46% | 100,00% | 57,61% | 40,46% |
 
-K-means: três grupos, silhueta amostral 0,241, limiar de recomendação selecionado em validação = 0,20. Taxas de recompra de treino dos três grupos: 0,69; 0,19; 0,32. ROC-AUC do K-means = 0,6645, da árvore = 0,7002.
+O **K-means obteve maior recall e F1** entre os dois modelos de aprendizado avaliados; a árvore apresentou maior precisão e acurácia. Essas métricas se referem exclusivamente ao período de teste histórico, não a compras em tempo real.
 
-## Interpretação correta
+### 🖼️ Visualizações geradas com os dados reais
 
-O projeto avalia **nova compra registrada em até 30 dias** em uma loja histórica, não prevê o **dia mais barato** nem qual SKU será comprado. Os resultados são retrospectivos e NÃO se referem à data presente. Não foram geradas operações sintéticas. Há imputação apenas de atributos derivados quando necessário, com mediana ajustada no treino.
+<table>
+  <tr>
+    <td width="50%"><a href="resultados/graficos/05_escolha_k.png"><img src="resultados/graficos/05_escolha_k.png" alt="Seleção do número de clusters" /></a><br /><b>Seleção de K</b></td>
+    <td width="50%"><a href="resultados/graficos/06_perfis_clusters.png"><img src="resultados/graficos/06_perfis_clusters.png" alt="Perfis dos grupos" /></a><br /><b>Perfis identificados</b></td>
+  </tr>
+  <tr>
+    <td><a href="resultados/graficos/07_matrizes_confusao.png"><img src="resultados/graficos/07_matrizes_confusao.png" alt="Matrizes de confusão" /></a><br /><b>Matrizes de confusão</b></td>
+    <td><a href="resultados/graficos/08_metricas_comparadas.png"><img src="resultados/graficos/08_metricas_comparadas.png" alt="Comparação de métricas" /></a><br /><b>Desempenho dos modelos</b></td>
+  </tr>
+</table>
 
-## Referências publicadas
+A pasta [`resultados/graficos/`](resultados/graficos/) reúne **10 gráficos** e [`resultados/tabelas/`](resultados/tabelas/) contém as tabelas CSV de auditoria, métricas e previsões.
 
-- CHEN, D.; SAIN, S. L.; GUO, K. (2012). *Data mining for the online retail industry: A case study of RFM model-based customer segmentation using data mining*. Journal of Database Marketing & Customer Strategy Management, 19(3), 197–208. https://doi.org/10.1057/dbm.2012.17
-- FADER, P. S.; HARDIE, B. G. S.; LEE, K. L. (2005). *“Counting Your Customers” the Easy Way: An Alternative to the Pareto/NBD Model*. Marketing Science, 24(2), 275–284. https://doi.org/10.1287/mksc.1040.0098
-- UCI Machine Learning Repository. *Online Retail*. https://archive.ics.uci.edu/dataset/352/online+retail (CC BY 4.0).
+## 📁 Organização do repositório
+
+```text
+Projeto-Final-de-Machine-Learning/
+├── assets/
+│   └── animacoes/                  # GIFs do README
+├── dados/
+│   └── Online Retail.xlsx          # base real integral
+├── notebooks/
+│   ├── Projeto_Final.ipynb          # notebook para executar
+│   └── Projeto_Final_EXECUTADO.ipynb # saídas registradas
+├── resultados/
+│   ├── graficos/                   # gráficos reais em PNG
+│   └── tabelas/                    # CSVs de auditoria, métricas e previsões
+├── relatorio/
+│   ├── Relatorio_Final.docx
+│   └── Relatorio_Final.pdf
+├── apresentacao/
+│   └── Apresentacao_Final.pptx
+├── requirements.txt
+├── .gitignore
+└── README.md
+```
+
+## 🚀 Como reproduzir
+
+**1. Clone o repositório e crie um ambiente virtual.**
+
+```powershell
+git clone https://github.com/Lightkiin/Projeto-Final-de-Machine-Learning.git
+cd Projeto-Final-de-Machine-Learning
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+**2. Instale as dependências.**
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+**3. Abra o notebook.**
+
+```powershell
+jupyter notebook
+```
+
+Abra [`notebooks/Projeto_Final.ipynb`](notebooks/Projeto_Final.ipynb), selecione o kernel do ambiente criado e execute **Run All**. O notebook encontra automaticamente a base em `dados/` e salva os novos resultados nas pastas corretas, mesmo quando aberto dentro de `notebooks/`.
+
+Para explorar resultados sem executar o pipeline novamente, abra [`notebooks/Projeto_Final_EXECUTADO.ipynb`](notebooks/Projeto_Final_EXECUTADO.ipynb). A execução original foi validada com Python 3.13.5, pandas 2.2.3 e scikit-learn 1.8.0. A primeira instalação das bibliotecas exige conexão, mas a base está incluída para a execução local.
+
+## 🔁 Atualizar o repositório no GitHub
+
+Se você já tem o repositório clonado, **copie o conteúdo desta versão organizada para a raiz do repositório**, substituindo os arquivos antigos. Preserve a pasta `.git` que já existe no seu computador; ela não está incluída neste ZIP. Remova da raiz os arquivos antigos que foram transferidos para as novas pastas e, então, execute:
+
+```powershell
+git add -A
+git status
+git commit -m "Organiza arquivos e adiciona README com GIFs"
+git push origin main
+```
+
+O Git reconhecerá os arquivos movidos quando possível. O `.gitignore` impede que ambientes virtuais como `env/` ou `.venv/` sejam adicionados.
+
+## 📖 Fundamentação e fontes
+
+1. **Chen, D.; Sain, S. L.; Guo, K. (2012).** *Data mining for the online retail industry: A case study of RFM model-based customer segmentation using data mining*. **Journal of Database Marketing & Customer Strategy Management**, 19(3), 197–208. [DOI](https://doi.org/10.1057/dbm.2012.17). Contribuição: segmentação RFM com K-means e interpretação de perfis de clientes.
+2. **Fader, P. S.; Hardie, B. G. S.; Lee, K. L. (2005).** *“Counting Your Customers” the Easy Way: An Alternative to the Pareto/NBD Model*. **Marketing Science**, 24(2), 275–284. [DOI](https://doi.org/10.1287/mksc.1040.0098). Contribuição: análise do comportamento de recompra a partir do histórico de transações; o modelo probabilístico do artigo não foi implementado neste trabalho.
+3. **UCI Machine Learning Repository.** [Online Retail](https://archive.ics.uci.edu/dataset/352/online+retail) (licença CC BY 4.0).
+
+## 👨‍💻 Autor
+
+**Brendon Córdova Silveira** · Engenharia da Computação · Projeto Final de Machine Learning
+
+<div align="center">
+
+⭐ Se o projeto foi útil, explore os notebooks e os gráficos para acompanhar cada etapa da análise.
+
+</div>

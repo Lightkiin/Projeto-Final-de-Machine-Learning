@@ -1,83 +1,41 @@
+# Ambientes virtuais (o código do projeto fica fora deles)
+env/
+venv/
+.venv/
+ENV/
 
-# ==========================================
-# AMBIENTE VIRTUAL PYTHON
-# ==========================================
-
-# Bibliotecas e dependências instaladas
-/Lib/
-/Include/
-/Scripts/
-/share/
-/etc/
-/bin/
-/DLLs/
-/tcl/
-/lib64/
-
-# Configurações do ambiente virtual
-/pyvenv.cfg
-/.Python
-/python.exe
-/pythonw.exe
-/python*.dll
-
-# ==========================================
-# CACHE DO PYTHON
-# ==========================================
-
+# Python e Jupyter
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-
-# ==========================================
-# JUPYTER NOTEBOOK
-# ==========================================
-
 .ipynb_checkpoints/
+.Python
 
-# ==========================================
-# ARQUIVOS SENSÍVEIS
-# ==========================================
-
+# Configurações pessoais e segredos
 .env
 .env.*
 !.env.example
-
-# ==========================================
-# CONFIGURAÇÕES DE EDITORES
-# ==========================================
-
 .vscode/
 .idea/
 
-# ==========================================
-# CACHE DE FERRAMENTAS
-# ==========================================
-
+# Cache, logs e artefatos temporários
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
-
-# ==========================================
-# ARQUIVOS TEMPORÁRIOS
-# ==========================================
-
+.cache/
 *.log
 *.tmp
 *.bak
 .DS_Store
 Thumbs.db
 
+# Distribuição Python
+build/
+dist/
+*.egg-info/
+
 # Arquivos temporários do Office
 ~$*.docx
 ~$*.xlsx
 ~$*.pptx
-
-# ==========================================
-# ARQUIVOS DE COMPILAÇÃO
-# ==========================================
-
-build/
-dist/
-*.egg-info/
