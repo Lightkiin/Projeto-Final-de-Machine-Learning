@@ -1,0 +1,4 @@
+cluster,clientes_fotografia,recencia_mediana,compras_mediana,gasto_mediano_gbp,intervalo_mediano_dias,prob_compra30_treino
+0,1620,13.0,6.0,2822.6,21.5,0.69
+1,739,120.0,2.0,625.48,36.0,0.19
+2,4176,31.0,2.0,766.02,53.5,0.32

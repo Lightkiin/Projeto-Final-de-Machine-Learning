@@ -1,0 +1,83 @@
+
+# ==========================================
+# AMBIENTE VIRTUAL PYTHON
+# ==========================================
+
+# Bibliotecas e dependências instaladas
+/Lib/
+/Include/
+/Scripts/
+/share/
+/etc/
+/bin/
+/DLLs/
+/tcl/
+/lib64/
+
+# Configurações do ambiente virtual
+/pyvenv.cfg
+/.Python
+/python.exe
+/pythonw.exe
+/python*.dll
+
+# ==========================================
+# CACHE DO PYTHON
+# ==========================================
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ==========================================
+# JUPYTER NOTEBOOK
+# ==========================================
+
+.ipynb_checkpoints/
+
+# ==========================================
+# ARQUIVOS SENSÍVEIS
+# ==========================================
+
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# CONFIGURAÇÕES DE EDITORES
+# ==========================================
+
+.vscode/
+.idea/
+
+# ==========================================
+# CACHE DE FERRAMENTAS
+# ==========================================
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ==========================================
+# ARQUIVOS TEMPORÁRIOS
+# ==========================================
+
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Arquivos temporários do Office
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# ==========================================
+# ARQUIVOS DE COMPILAÇÃO
+# ==========================================
+
+build/
+dist/
+*.egg-info/
