@@ -157,6 +157,8 @@ O Git reconhecerá os arquivos movidos quando possível. O `.gitignore` impede q
 ## 👨‍💻 Autor
 
 **Brendon Córdova Silveira** · Engenharia da Computação · Projeto Final de Machine Learning
+**Ígor Da Silva Antunes** · Engenharia da Computação · Projeto Final de Machine Learning
+**Davi Chechetto Westphal** · Engenharia da Computação · Projeto Final de Machine Learning
 
 <div align="center">
 
